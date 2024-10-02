@@ -31,7 +31,7 @@ export class WorkshopPipelineStack extends cdk.Stack {
           `${branch}`,
           {
             connectionArn: connectionArn,
-            triggerOnPush: false
+            triggerOnPush: true
           }
         ),
         installCommands: ['npm install -g aws-cdk'],
