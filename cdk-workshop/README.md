@@ -13,3 +13,12 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `cdk deploy`      deploy this stack to your default AWS account/region
 * `cdk diff`        compare deployed stack with current state
 * `cdk synth`       emits the synthesized CloudFormation template
+
+1. パッケージインストール
+```
+npm install
+```
+2. デプロイ
+```
+cdk deploy --profile [profile name] -c Owner=[Owner] -c Repository=[Repository name] -c Branch=[Branch name] -c ConnectionArn=[Connection ARN]
+```

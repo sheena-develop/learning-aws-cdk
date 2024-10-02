@@ -1,4 +1,5 @@
-import { AttributeType, TableEncryption, Table } from "aws-cdk-lib/aws-dynamodb";
+import { RemovalPolicy } from "aws-cdk-lib";
+import { AttributeType, Table, TableEncryption } from "aws-cdk-lib/aws-dynamodb";
 import { Code, Function, IFunction, Runtime } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
 
@@ -19,7 +20,7 @@ export class HitCounter extends Construct {
   /** allows accessing the counter function */
   public readonly handler: Function;
 
-  /** allows accessing the hit counter table */
+  /**  allows accessing the hit counter table */
   public readonly table: Table;
 
   constructor(scope: Construct, id: string, props: HitCounterProps) {
@@ -29,13 +30,16 @@ export class HitCounter extends Construct {
 
     super(scope, id);
 
-    this.table = new Table(this, "Hits", {
+    const table = new Table(this, "Hits", {
       partitionKey: {
-        name: "path", type: AttributeType.STRING
+        name: "path",
+        type: AttributeType.STRING,
       },
       encryption: TableEncryption.AWS_MANAGED,
-      readCapacity: props.readCapacity ?? 5
+      readCapacity: props.readCapacity ?? 6, // Change the 5 to 6
+      removalPolicy: RemovalPolicy.DESTROY, // Add this and the import on the top line
     });
+    this.table = table;
 
     this.handler = new Function(this, "HitCounterHandler", {
       runtime: Runtime.NODEJS_18_X,
